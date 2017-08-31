@@ -1,5 +1,5 @@
 import * as types from '../action-types';
-import {getTypes,getFocuses,getArticles,clickLikes} from '../../api/home';
+import {getTypes,getFocuses,getArticles,clickLikes,cancelLikes,clickFavorites,cancelFavorites} from '../../api/home';
 import {auths} from '../../api/user';
 import {push} from 'react-router-redux';
 
@@ -59,7 +59,6 @@ export const resetHome = ()=>{
 //点赞
 export const clickLike = (article)=>(dispatch)=>{
     auths().then(data=>{
-        console.log(data);
         if(data.username){
             clickLikes(article).then(data=>{
                 dispatch({
@@ -76,6 +75,31 @@ export const clickLike = (article)=>(dispatch)=>{
             dispatch(push('/login'));
         }
     })
-}
+};
+
+//取消点赞
+export const cancelLike = (article) =>(dispatch)=>{
+    cancelLikes(article).then(data=>{
+        dispatch({
+            type:types.CANCEL_LIKE,
+            like:data.doc.like,
+            _id:data.doc._id,
+        });
+        dispatch({
+            type:types.SET_USER_INFO,
+            userInfo:data.user,
+        });
+    });
+};
+
+//收藏功能
+export const clickFavorite = (article)=>(dispatch)=>{
+    clickFavorites(article).then(user=>{
+        dispatch({
+            type:types.SET_USER_INFO,
+            userInfo:user,
+        });
+    })
+};
 
 

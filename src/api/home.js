@@ -13,3 +13,12 @@ export const getArticles = (typeid,offset,limit)=>get(url+`/article/${typeid}/${
 
 //点赞
 export const clickLikes = (article)=>post(url+'/like',article);
+
+//取消点赞
+export const cancelLikes = (article)=>post(url+'/cancellike',article);
+
+//收藏功能
+export const clickFavorites = (article)=>post(url+'/favorite',article);
+
+//取消收藏
+export const cancelFavorites = (article)=>post(url+'/cancelfavorite',article);

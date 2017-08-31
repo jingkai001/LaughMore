@@ -2,9 +2,12 @@ import React, {Component} from 'react';
 import HomeHeader from "../../components/HomeHeader/index";
 import {NavLink, Route} from 'react-router-dom';
 import {connect} from 'react-redux';
-import * as action from '../../redux/actions/home';
+import * as homeAction from '../../redux/actions/home';
+import * as userAction from '../../redux/actions/user'
 import Focus from "../../components/Focus/index";
 import ScrollList from "../../components/ScrollList/index";
+
+const action =Object.assign({},homeAction,userAction);
 
 
 class Home extends Component {
@@ -18,11 +21,20 @@ class Home extends Component {
         this.props.getArticle();
     };
 
+    //点赞功能：
     clickLike = (item)=>{
-        this.props.clickLike(item);
+        let like = this.props.user.userInfo.like||[];
+        like.find(likeId=>likeId==item._id) ? this.props.cancelLike(item) : this.props.clickLike(item);
     };
 
+    //收藏功能：
+    clickFavorite = (item)=>{
+        window.getItem('user')
+    }
+
     componentDidMount() {
+        //验证是否登录
+        this.props.auth();
 
         if (this.props.home.article.articleList.length > 0) {
             this.forceUpdate();
@@ -34,9 +46,6 @@ class Home extends Component {
             this.props.getArticle();
         }
 
-        /*if(this.props.home.article.articleList.length===0){
-
-         }*/
     }
 
     //组件卸载时，重置store中的文章数据；
@@ -47,6 +56,8 @@ class Home extends Component {
     render() {
         let {articleList, hasMore, isLoading} = this.props.home.article;
         let like = this.props.user.userInfo.like||[];
+        let favorite = this.props.user.userInfo.favorite||[];
+
         // console.log(like.some(likeId=>likeId==''))
         return (
             <div className="content">
@@ -77,7 +88,7 @@ class Home extends Component {
                                             <i className="glyphicon glyphicon-tags tag">{item.type.name}</i>
                                             <div className="article-bottom-right">
                                                 <i className={like.some(likeId=>likeId==item._id)?"glyphicon glyphicon-thumbs-up mark":"glyphicon glyphicon-thumbs-up"} onClick={()=>this.clickLike(item)}>{item.like}</i>
-                                                <i className="glyphicon glyphicon-heart"></i>
+                                                <i className={favorite.some(id=>id==item._id)?"glyphicon glyphicon-heart mark":"glyphicon glyphicon-heart"} onClick={()=>this.clickFavorite(item)}></i>
                                                 <i className="glyphicon glyphicon-comment">{item.comments.length}</i>
                                             </div>
                                         </div>

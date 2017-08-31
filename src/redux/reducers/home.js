@@ -82,7 +82,23 @@ export default function (state = initState, action) {
                     ...state.article,
                     articleList:newArticleList,
                 }
-            }
+            };
+        case types.CANCEL_LIKE:
+            articleList = state.article.articleList;
+            newArticleList = articleList.filter(item=>{
+                if(item._id==action._id){
+                    item.like=action.like;
+                    return item;
+                }
+                return item;
+            });
+            return {
+                ...state,
+                article:{
+                    ...state.article,
+                    articleList:newArticleList,
+                }
+            };
 
     }
     return state;

@@ -12,8 +12,8 @@ let UserSchema = new mongoose.Schema({
     avatar:String,
     // like:{type:ObjectId,ref:'Article'},
     like:Array,
-    favourite:{type:ObjectId,ref:'Article'},
-    publish:{type:ObjectId,ref:'Article'},
+    favourite:Array,
+    publish:Array,
     email:{type:String,default:''},
     birthday:{type:String,default:''},
 });

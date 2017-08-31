@@ -19,8 +19,14 @@ export const RESET_HOME = 'RESET_HOME';
 //点赞
 export const CLICK_LIKE = 'CLICK_LIKE';
 
-//点赞后
+//取消点赞
+export const CANCEL_LIKE = 'CANCEL_LIKE';
 
+//收藏
+export const CLICK_FAVORITE = 'CLICK_FAVORITE';
+
+//取消收藏
+export const CANCEL_FAVORITE = 'CANCEL_FAVORITE';
 
 
 
@@ -44,3 +50,5 @@ export const CLEAR_USER_ERROR='CLEAR_USER_ERROR';
 //获取初始文章列表
 export const GET_ALL="GET_ALL";
 
+//退出登录，清除用户信息
+export const DEL_USER_INFO = 'DEL_USER_INFO';

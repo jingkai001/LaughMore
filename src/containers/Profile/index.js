@@ -7,6 +7,12 @@ class Profile extends Component{
     componentWillMount(){
         this.props.auth()
     }
+
+    logout = ()=>{
+        this.props.logout();
+        this.props.history.push('/');
+    };
+
     render(){
         return (
             <div className="profile">
@@ -33,6 +39,9 @@ class Profile extends Component{
                         <i className="iconfont icon-zan2"></i>
                         <span>点赞</span>
                         <i className="iconfont icon-right"></i>
+                    </div>
+                    <div className="logout" onClick={this.logout}>
+                        退出登录
                     </div>
                 </div>
             </div>

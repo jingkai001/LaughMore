@@ -109,11 +109,29 @@ app.post('/cancelLike',function (req,res) {
 
             //找到点赞的文章，将其外键从用户的like数组中删除；
             let currentUser = req.session.user;
-            User.update({username:currentUser.username},{$pull:{like:doc._id}}).exec();
-            res.json(doc);
+            User.update({username:currentUser.username},{$pull:{like:doc._id}}).exec(function () {
+                User.findOne({username:currentUser.username},function (err,user) {
+                    res.json({doc,user})
+                })
+            });
         })
     }).catch(e=>{
         res.json({err:e})
+    })
+});
+
+//收藏
+app.post('/favorite',function (req,res) {
+    let article = req.body;
+    let currentUser = req.session.user;
+    User.update({username:currentUser.username},{$push:{favorite:article._id}}).exec(function (err,doc) {
+        if(!err){
+            User.findOne({username:currentUser.username},function (err,user) {
+                res.json(user);
+            })
+        }else{
+            res.json({err})
+        }
     })
 });
 
@@ -204,7 +222,7 @@ app.get('/auth',function (req,res) {
 });
 */
 
-//
+
 //注册 post
 let multer = require('multer');
 let update = multer({dest:'../upload'});
@@ -252,10 +270,10 @@ app.post('/login',function (req,res) {
 
 //验证用户是否登录
 app.get('/auth',function (req,res) {
-    let username = req.session.user.username;
+    let user = req.session.user||{};
+    let username = user.username;
     if(username){
         User.findOne({username},function (err,user) {
-            console.log(user);
             res.json(user);
         });
     }else{
@@ -264,11 +282,21 @@ app.get('/auth',function (req,res) {
 });
 
 //修改用户信息
-app.post('/modify',function (req,res) {
+app.post('/modify',update.single('file'),function (req,res) {
     let user = req.body;
+    console.log(req.file)
     console.log(req.body);
 });
 
+//退出登录
+app.get('/logout',function (req,res) {
+    if(req.session.user){
+        req.session.user='';
+        res.json({code:1,msg:'退出成功'});
+    }else{
+        res.json({code:0,msg:'退出失败'});
+    }
+});
 
 
 app.listen(3000);

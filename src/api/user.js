@@ -19,3 +19,6 @@ export const auths=()=>{
 export const logins=(userInfo)=>{
     return post(url+'/login',userInfo)
 }
+
+//退出登录
+export const logouts = ()=>get(url+'/logout');
