@@ -90,13 +90,27 @@ app.post('/like',function (req,res) {
         Article.findOne({_id:article._id}).then((doc)=>{
 
             //找到点赞的文章，将其外键放入到用户的数据库中
-            //let currentUser = req.session.user;
-            //User.update({username:currentUser.username},{$push:{like:doc._id}});
-
+            let currentUser = req.session.user;
+            User.update({username:currentUser.username},{$push:{like:doc._id}}).exec();
             res.json(doc);
         })
     }).catch(e=>{
-        console.log(e);
+        res.json({err:e})
+    })
+});
+
+//取消点赞
+app.post('/cancelLike',function (req,res) {
+    let article = req.body;
+    Article.update({_id:article._id},{$inc:{like:-1}}).then(()=>{
+        Article.findOne({_id:article._id}).then((doc)=>{
+
+            //找到点赞的文章，将其外键从用户的like数组中删除；
+            let currentUser = req.session.user;
+            User.update({username:currentUser.username},{$pull:{like:doc._id}}).exec();
+            res.json(doc);
+        })
+    }).catch(e=>{
         res.json({err:e})
     })
 });

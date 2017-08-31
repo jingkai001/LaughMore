@@ -13,8 +13,8 @@ let UserSchema = new mongoose.Schema({
     like:{type:ObjectId,ref:'Article'},
     favourite:{type:ObjectId,ref:'Article'},
     publish:{type:ObjectId,ref:'Article'},
-    email:String,
-    birthday:String,
+    email:{type:String,default:''},
+    birthday:{type:String,default:''},
 });
 
 exports.User = conn.model('User',UserSchema);
