@@ -88,11 +88,13 @@ app.post('/like',function (req,res) {
     let article = req.body;
     Article.update({_id:article._id},{$inc:{like:1}}).then(()=>{
         Article.findOne({_id:article._id}).then((doc)=>{
-
             //找到点赞的文章，将其外键放入到用户的数据库中
             let currentUser = req.session.user;
-            User.update({username:currentUser.username},{$push:{like:doc._id}}).exec();
-            res.json(doc);
+            User.update({username:currentUser.username},{$push:{like:doc._id}}).exec(function () {
+                User.findOne({username:currentUser.username},function (err,user) {
+                    res.json({doc,user});
+                })
+            });
         })
     }).catch(e=>{
         res.json({err:e})
@@ -250,8 +252,12 @@ app.post('/login',function (req,res) {
 
 //验证用户是否登录
 app.get('/auth',function (req,res) {
-    if(req.session.user){
-        res.json(req.session.user);
+    let username = req.session.user.username;
+    if(username){
+        User.findOne({username},function (err,user) {
+            console.log(user);
+            res.json(user);
+        });
     }else{
         res.json({});
     }

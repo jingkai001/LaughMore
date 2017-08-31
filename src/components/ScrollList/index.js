@@ -8,12 +8,10 @@ export default class ScrollList extends Component{
     componentWillReceiveProps(nextProps){
 
         if(nextProps.element && !this.state.flag){
-            console.log(1);
             this.setState({flag:true});
             nextProps.element.addEventListener('scroll',()=>{
-                // clearTimeout(this.timer);
+                clearTimeout(this.timer);
                 this.timer = setTimeout(()=>{
-                    console.log(1);
                     let {scrollTop,offsetHeight,scrollHeight} = nextProps.element;
                     if(scrollTop+offsetHeight+20>scrollHeight && this.props.hasMore && !this.props.isLoading){
                         this.props.loadMore();

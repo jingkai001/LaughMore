@@ -34,8 +34,6 @@ class Profile extends Component{
                         <span>点赞</span>
                         <i className="iconfont icon-right"></i>
                     </div>
-
-
                 </div>
             </div>
         )

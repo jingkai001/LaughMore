@@ -70,11 +70,8 @@ export default function (state = initState, action) {
         case types.CLICK_LIKE:
             let articleList = state.article.articleList;
             let newArticleList = articleList.filter(item=>{
-                console.log(action);
-                console.log(item._id,action._id);
                 if(item._id==action._id){
                     item.like=action.like;
-                    console.log(item);
                     return item;
                 }
                 return item;

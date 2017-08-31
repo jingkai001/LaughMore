@@ -59,14 +59,17 @@ export const resetHome = ()=>{
 //点赞
 export const clickLike = (article)=>(dispatch)=>{
     auths().then(data=>{
+        console.log(data);
         if(data.username){
-            console.log(111);
             clickLikes(article).then(data=>{
-                console.log(data);
                 dispatch({
                     type:types.CLICK_LIKE,
-                    like:data.like,
-                    _id:data._id,
+                    like:data.doc.like,
+                    _id:data.doc._id,
+                });
+                dispatch({
+                    type:types.SET_USER_INFO,
+                    userInfo:data.user,
                 })
             })
         }else{

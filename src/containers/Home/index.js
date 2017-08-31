@@ -46,6 +46,8 @@ class Home extends Component {
 
     render() {
         let {articleList, hasMore, isLoading} = this.props.home.article;
+        let like = this.props.user.userInfo.like||[];
+        // console.log(like.some(likeId=>likeId==''))
         return (
             <div className="content">
                 <HomeHeader/>
@@ -74,7 +76,7 @@ class Home extends Component {
                                         <div className="article-bottom">
                                             <i className="glyphicon glyphicon-tags tag">{item.type.name}</i>
                                             <div className="article-bottom-right">
-                                                <i className="glyphicon glyphicon-thumbs-up" onClick={()=>this.clickLike(item)}>{item.like}</i>
+                                                <i className={like.some(likeId=>likeId==item._id)?"glyphicon glyphicon-thumbs-up mark":"glyphicon glyphicon-thumbs-up"} onClick={()=>this.clickLike(item)}>{item.like}</i>
                                                 <i className="glyphicon glyphicon-heart"></i>
                                                 <i className="glyphicon glyphicon-comment">{item.comments.length}</i>
                                             </div>

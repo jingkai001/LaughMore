@@ -19,7 +19,7 @@ export const RESET_HOME = 'RESET_HOME';
 //点赞
 export const CLICK_LIKE = 'CLICK_LIKE';
 
-
+//点赞后
 
 
 

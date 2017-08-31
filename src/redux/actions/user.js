@@ -47,6 +47,7 @@ export const login = (userInfo) => (dispatch) => {
 //个人主页验证登录
 export const auth=()=>(dispatch)=>{
     auths().then(data=>{
+        console.log(data);
         if(data.username){
             util.set('user',data)
             dispatch({
@@ -61,7 +62,7 @@ export const auth=()=>(dispatch)=>{
 export const validate=()=>(dispatch)=>{
     auths().then(data=>{
         if(data.username){
-            util.set('user',data)
+            util.set('user',data);
             dispatch({
                 type:types.SET_USER_INFO,
                 userInfo:data
