@@ -14,11 +14,7 @@ let UserSchema = new mongoose.Schema({
     favourite:{type:ObjectId,ref:'Article'},
     publish:{type:ObjectId,ref:'Article'},
     email:String,
-    sex:Number,
-    location:String,
-    company:String,
     birthday:String,
-    school:String,
 });
 
 exports.User = conn.model('User',UserSchema);

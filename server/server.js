@@ -197,7 +197,6 @@ let crypto = require('crypto');
 let md5 = (val) => crypto.createHash('md5').update(val).digest('hex');
 app.post('/signup',update.single('avatar'),function (req,res) {
     let user = req.body;
-    console.log(user)
     //用户头像路径（如果上传头像就用上传的头像，如果没传用默认头像）
     user.avatar = (req.file && `/${req.file.filename}`) || '/default.png';
     // user.like = null;
@@ -208,7 +207,6 @@ app.post('/signup',update.single('avatar'),function (req,res) {
         if(doc){
             res.json({err:'此用户名已被注册，请重新选择用户名'});
         }else{
-            console.log(user)
             User.create(user,function (err,doc) {
                 if(doc){
                     req.session.user = doc;//注册成功后把用户存到session中
@@ -236,7 +234,6 @@ app.post('/login',function (req,res) {
     })
 });
 
-
 //验证用户是否登录
 app.get('/auth',function (req,res) {
     if(req.session.user){
@@ -245,6 +242,13 @@ app.get('/auth',function (req,res) {
         res.json({});
     }
 });
+
+//修改用户信息
+app.post('/modify',function (req,res) {
+    let user = req.body;
+    console.log(req.body);
+});
+
 
 
 app.listen(3000);
