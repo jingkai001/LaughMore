@@ -14,7 +14,7 @@ class Profile extends Component{
                     我的
                 </div>
                 <div className="profile-header">
-                    <div><img src={this.props.user.userInfo.avatar} alt=""/></div>
+                    <div><img src={"/upload"+this.props.user.userInfo.avatar} alt=""/></div>
                     <span>{this.props.user.userInfo.username}</span>
                     <i className="iconfont icon-shezhi">修改资料</i>
                 </div>
