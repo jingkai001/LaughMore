@@ -17,51 +17,20 @@ class Publish extends Component{
 
     componentDidMount(){
         this.props.getType();
-        //!sessionStorage.getItem('user')?this.props.history.push('/login'):null;
-        this.props.auth();
+        !sessionStorage.getItem('user')?this.props.history.push('/login'):null;
     }
-
-    /*submit=(e)=>{
-        e.preventDefault();
-
-    }
-
-    render(){
-        let {category} = this.props.home||[];
-        return (
-            <div className="publish">
-                <MHeader title="发表文章"/>
-                <div className="publish-content">
-                    <form action="/publisharticle" method="post">
-                        <div className="art-Title">
-                            <input type="text" placeholder="标题" name="title"/>
-                        </div>
-                        <select className="category" name="category">
-                            {category.map((item,index)=>(
-                                <option value={item.name} key={index}>{item.name}</option>
-                            ))}
-                        </select>
-                        <div className="art-content">
-                            <textarea cols="30" rows="10" placeholder="请输入内容" name="text"></textarea>
-                            <i className="glyphicon glyphicon-camera"></i>
-                            <input type="file" name="image"/>
-                        </div>
-                        <input type="submit" className="submit-art" value="提交" onClick={this.submit}/>
-                    </form>
-
-                </div>
-            </div>
-        )
-    }*/
 
     submitImg = (info)=>{
         if(info.file.status === 'error'){
             alert('上传失败');
         }else if(info.file.status === 'done'){
-            console.log(info);
             let article = info.file.response;
             this.props.savePublishImg(article);
         }
+    };
+
+    changeCategory = (val)=>{
+        this.val = val;
     };
 
     handleSubmit = ()=>{
@@ -69,19 +38,13 @@ class Publish extends Component{
 
         let title = this.refs.title.refs.input.value;
         let content = this.refs.content.textAreaRef.value;
+        let category = this.val;
 
-        console.log(this.refs);
-
-        let article = {};
-        console.log(title,content);
-        article.title = title.value;
-        article.category = category.value;
-        article.content = content.value;
-        console.log(article);
+        let article = this.props.publish.article;
+        article.title = title;
+        article.type = category;
+        article.text = content;
         this.props.publishArticle(article);
-
-
-
     };
 
     render(){
@@ -114,7 +77,7 @@ class Publish extends Component{
                             <Input placeholder="请输入标题" ref="title"/>
                         </FormItem>
                         <FormItem label='主题' labelCol={{xs:{span:3}}} wrapperCol={{xs:{span:10}}}>
-                            <Select placeholder="选择主题分类" ref="category">
+                            <Select placeholder="选择主题分类" ref="category" onChange={this.changeCategory}>
                                 {category.map((item,index)=>(
                                     <Option value={item.name} key={index}>{item.name}</Option>
                                 ))}

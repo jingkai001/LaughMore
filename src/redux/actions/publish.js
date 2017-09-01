@@ -11,12 +11,14 @@ export const savePublishImg = (article)=>{
 };
 
 
+//
 export const publishArticle = (article)=>(dispatch)=>{
     publishArticles(article).then(function (doc) {
         dispatch({
             type:types.SET_PUBLISH_ARTICLE,
             doc,
         });
+        console.log(doc);
         push('/detail/'+doc._id);
     })
 };

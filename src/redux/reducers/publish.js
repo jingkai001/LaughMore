@@ -11,6 +11,13 @@ export default function (state=initState,action) {
                 ...state,
                 article:action.article,
             };
+        // case types.SET_PUBLISH_TYPE:
+        //     return {
+        //         ...state,
+        //         article:{
+        //             ...state.article,
+        //         }
+        //     };
         case types.SET_PUBLISH_ARTICLE:
             return {
                 ...state,

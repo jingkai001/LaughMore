@@ -310,7 +310,7 @@ app.post('/login',function (req,res) {
 app.get('/auth',function (req,res) {
     let user = req.session.user||{};
     let username = user.username;
-    console.log(username);
+
     if(username){
         User.findOne({username},function (err,user) {
             res.json(user);
@@ -364,21 +364,21 @@ app.get('/logout',function (req,res) {
 app.get('/getlike',function (req,res) {
     let user = req.session.user||{};
     let username = user.username;
-    //console.log(username);
+
     User.findOne({username}).populate('like').exec(function (err,user) {
-        console.log(user.like);
+
         res.json(user.like);
     })
 
 });
 
 
-//发表文章时上传图片
+//发表文章时上传图片,如果用户点上传图片的话，点了会立马发请求，接收到请求后就会创建一个新的文章，之后传过来的内容再加在此新建的文章中；
 app.post('/publishimg',update.single('publishImg'),function (req,res) {
     let user = req.session.user||{};
     let username = user.username;
     let img = '/upload/'+req.file.filename;
-    let article = {img};
+    let article = {image:img};
     Article.find({},function (err,docs) {
         article.order = docs[docs.length-1].order+1;
         Article.create(article,function (err,doc) {
@@ -389,25 +389,39 @@ app.post('/publishimg',update.single('publishImg'),function (req,res) {
 });
 
 
-//发表文章
+//发表文章  如果用户点了上传图片，需要找上传图片时存到数据库中的文章，如果用户不点上传图片，则需要新建一个文章；
 app.post('/publisharticle',function (req,res) {
     let article = req.body;
-    console.log(article);
-    article.author = req.session.user.username;
     let username = req.session.user.username;
-    Type.findOne({name:article.category},function (err,type) {
-        console.log(type);
-        article.category = type._id;
-        Article.update({_id:article._id},article,function (err,result) {
+    article.author = username;
+
+    if(article._id){//有_id说明之前点了上传图片
+        Type.findOne({name:article.type},function (err,type) {
             if(err){
                 res.json({err});
             }else{
-                Article.findOne({_id:article._id},function (err,doc) {
-                    res.json(doc);
+                article.type = type._id;
+                Article.update({_id:article._id},article,function (err,result) {
+                    if(err){
+                        res.json({err});
+                    }else{
+                        Article.findOne({_id:article._id}).populate('type').exec((err,doc)=> {
+                            res.json(doc);
+                        })
+                    }
                 })
             }
         })
-    })
+    }else{//没有_id说明之前没有穿图片，此时要新建；
+        Article.find({},function (err,docs) {
+            article.order = docs[docs.length-1].order+1;
+            Article.create(article,function (err,doc) {
+                User.update({username:username},{$push:{publish:doc._id}});
+                res.json(doc);
+            })
+        });
+
+    }
 });
 
 

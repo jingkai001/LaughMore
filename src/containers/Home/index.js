@@ -67,6 +67,7 @@ class Home extends Component {
         let like = this.props.user.userInfo.like||[];
         let favorite = this.props.user.userInfo.favorite||[];
 
+
         // console.log(like.some(likeId=>likeId==''))
         return (
             <div className="content">

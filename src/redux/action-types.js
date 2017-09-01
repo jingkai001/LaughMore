@@ -62,8 +62,16 @@ export const PUBLISH_COMMENT = 'PUBLISH_COMMENT';
 //删除评论
 export const DEL_COMMENT = 'DEL_COMMENT';
 
+
+
+
+
 //发表文章上传图片
 export const SET_UPLOAD_IMG = 'SET_UPLOAD_IMG';
 
 //发表文章出图片外其他内容
 export const SET_PUBLISH_ARTICLE = 'SET_PUBLISH_ARTICLE';
+
+
+
+
