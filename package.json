@@ -27,6 +27,7 @@
     "webpack-dev-server": "^2.7.1"
   },
   "dependencies": {
+    "antd": "^2.12.8",
     "body-parser": "^1.17.2",
     "bootstrap": "^3.3.7",
     "cheerio": "^1.0.0-rc.2",

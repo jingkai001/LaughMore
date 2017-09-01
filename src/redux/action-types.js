@@ -31,14 +31,6 @@ export const CANCEL_FAVORITE = 'CANCEL_FAVORITE';
 
 
 
-
-
-
-
-
-
-
-
 //设置用户信息
 export const SET_USER_INFO='SET_USER_INFO';
 
@@ -52,3 +44,26 @@ export const GET_ALL="GET_ALL";
 
 //退出登录，清除用户信息
 export const DEL_USER_INFO = 'DEL_USER_INFO';
+
+
+
+//获取某一篇文章 设置detail
+export const GET_ONE_ARTICLE = 'GET_ONE_ARTICLE';
+
+//加载更多留言
+export const LOAD_MORE = 'LOAD_MORE';
+
+//重置detail
+export const RESET_DETAIL = 'RESET_DETAIL';
+
+//发表评论
+export const PUBLISH_COMMENT = 'PUBLISH_COMMENT';
+
+//删除评论
+export const DEL_COMMENT = 'DEL_COMMENT';
+
+//发表文章上传图片
+export const SET_UPLOAD_IMG = 'SET_UPLOAD_IMG';
+
+//发表文章出图片外其他内容
+export const SET_PUBLISH_ARTICLE = 'SET_PUBLISH_ARTICLE';

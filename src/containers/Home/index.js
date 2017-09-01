@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import HomeHeader from "../../components/HomeHeader/index";
-import {NavLink, Route} from 'react-router-dom';
+import {NavLink, Route,Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import * as homeAction from '../../redux/actions/home';
 import * as userAction from '../../redux/actions/user'
@@ -29,8 +29,13 @@ class Home extends Component {
 
     //收藏功能：
     clickFavorite = (item)=>{
-        window.getItem('user')
-    }
+        if(sessionStorage.getItem('user')){
+            let favorite = this.props.user.userInfo.favorite||[];
+            favorite.some(id=>id==item._id) ? this.props.cancelFavorite(item) : this.props.clickFavorite(item);
+        }else{
+            this.props.history.push('/login');
+        }
+    };
 
     componentDidMount() {
         //验证是否登录
@@ -45,6 +50,9 @@ class Home extends Component {
             this.props.getFocus();
             this.props.getArticle();
         }
+        // if(this.props.home.article.articleList.length==0){
+        //     this.props.getArticle();
+        // }
 
     }
 
@@ -55,6 +63,7 @@ class Home extends Component {
 
     render() {
         let {articleList, hasMore, isLoading} = this.props.home.article;
+        let userInfo = this.props.user.userInfo;
         let like = this.props.user.userInfo.like||[];
         let favorite = this.props.user.userInfo.favorite||[];
 
@@ -76,7 +85,9 @@ class Home extends Component {
                         <ul className="content-body">
                             {
                                 articleList.map((item, index) => (
+
                                     <li className="article-item" key={index}>
+                                        <Link to={'/detail/'+item._id}>
                                         <div className="article-top">
                                             <img src={item.image}/>
                                             <div className="article-right">
@@ -84,6 +95,7 @@ class Home extends Component {
                                                 <p>{item.text}</p>
                                             </div>
                                         </div>
+                                        </Link>
                                         <div className="article-bottom">
                                             <i className="glyphicon glyphicon-tags tag">{item.type.name}</i>
                                             <div className="article-bottom-right">
@@ -96,6 +108,7 @@ class Home extends Component {
                                 ))
                             }
                         </ul>
+
                     </ScrollList>
                 </div>
             </div>

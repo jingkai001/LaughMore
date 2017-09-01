@@ -29,7 +29,7 @@ app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
     res.header('Access-Control-Allow-Credentials','true');
     res.header("X-Powered-By",' 3.2.1');
-    if(req.method==="OPTIONS") res.send(200);
+    if(req.method==="OPTIONS") res.sendStatus(200);
     else  next();
 });
 
@@ -135,32 +135,69 @@ app.post('/favorite',function (req,res) {
     })
 });
 
+//取消收藏
+app.post('/cancelfavorite',function (req,res) {
+    let article = req.body;
+    let currentUser = req.session.user;
+    User.update({username:currentUser.username},{$pull:{favorite:article._id}}).exec(function (err,doc) {
+        if(!err){
+            User.findOne({username:currentUser.username},function (err,user) {
+                res.json(user);
+            })
+        }else{
+            res.json({err});
+        }
+    })
+});
 
 //获取某一篇文章
-/*app.get('/article/:id',function (req,res) {
+app.get('/detail/:id',function (req,res) {
     let {id} = req.params;
-    Article.findOne({order:id}).populate('type').exec(function (err,article) {
+    Article.findOne({_id:id}).populate('type').exec(function (err,article) {
         if(err){
             res.json(err);
         }else{
             res.json(article);
         }
     })
-});*/
+});
 
-//发表文章
-app.post('/publish',function (req,res) {
-    let article = req.body;
-    article.author = req.session.user.username;
-    Article.find({}).sort({order:-1}).then(function (oldArticle) {
-        article.order = oldArticle ? oldArticle.order+1:1;
-        return Article.create(article);//此时article没有点赞等属性；
-    }).then(function (doc) {
-        res.json(doc);
-    }).catch(function () {
-        res.json({err:'发表文章失败'});
+//写评论
+app.post('/comment/:id',function (req,res) {
+
+    let {id} = req.params;
+
+    let {comment} = req.body;
+    let username = req.session.user.username;
+    let comments = {user:username,content:comment};
+
+    Article.update({_id:id},{$push:{comments:comments}},function (err,result) {
+        if(err){
+            res.json({err});
+        }else{
+            Article.findOne({_id:id}).populate('type').exec(function (err,article) {
+                res.json(article);
+            })
+        }
+    })
+});
+
+//删除评论
+app.post('/delcomment/:id',function (req,res) {
+    let {id} = req.params;
+    let commentId = req.body.commentId;
+
+    Article.update({_id:id},{$pull:{comments:{_id:commentId}}},function (err,result) {
+        if(err){
+            res.json(err);
+        }else{
+            Article.findOne({_id:id}).populate('type').exec(function (err,article) {
+                res.json(article);
+            });
+        }
     });
 });
+
 
 
 //注册 post
@@ -232,10 +269,11 @@ let md5 = (val) => crypto.createHash('md5').update(val).digest('hex');
 app.post('/signup',update.single('avatar'),function (req,res) {
     let user = req.body;
     //用户头像路径（如果上传头像就用上传的头像，如果没传用默认头像）
-    user.avatar = (req.file && `/${req.file.filename}`) || '/default.png';
+    user.avatar = (req.file && `/upload/${req.file.filename}`) || '/upload/default.png';
     // user.like = null;
     // user.favorite = null;
     // user.publish = null;
+
     user.password = md5(user.password);
     User.findOne({username:user.username},function (err,doc) {
         if(doc){
@@ -272,6 +310,7 @@ app.post('/login',function (req,res) {
 app.get('/auth',function (req,res) {
     let user = req.session.user||{};
     let username = user.username;
+    console.log(username);
     if(username){
         User.findOne({username},function (err,user) {
             res.json(user);
@@ -281,12 +320,35 @@ app.get('/auth',function (req,res) {
     }
 });
 
-//修改用户信息
-app.post('/modify',update.single('file'),function (req,res) {
-    let user = req.body;
-    console.log(req.file)
-    console.log(req.body);
+//修改用户信息 头像
+app.post('/modifyavatar',update.single('avatar'),function (req,res) {
+    let file = req.file;
+    let avatar = '/upload/'+file.filename;
+    let username = req.session.user.username;
+    User.update({username},{avatar},function (err,user) {
+        if(err){
+            res.send({err});
+        }else{
+            res.send({code:1});
+        }
+    });
 });
+
+//修改用户信息
+app.post('/modify',function (req,res) {
+    let user = req.body;
+    let username = req.session.user.username;
+    User.update({username},user,function (err,result) {
+        if(err){
+            res.json({err});
+        }else{
+            User.findOne({username},function (e,user) {
+                res.json(user);
+            })
+        }
+    })
+});
+
 
 //退出登录
 app.get('/logout',function (req,res) {
@@ -296,6 +358,56 @@ app.get('/logout',function (req,res) {
     }else{
         res.json({code:0,msg:'退出失败'});
     }
+});
+
+//返回对应用户的点赞文章列表
+app.get('/getlike',function (req,res) {
+    let user = req.session.user||{};
+    let username = user.username;
+    //console.log(username);
+    User.findOne({username}).populate('like').exec(function (err,user) {
+        console.log(user.like);
+        res.json(user.like);
+    })
+
+});
+
+
+//发表文章时上传图片
+app.post('/publishimg',update.single('publishImg'),function (req,res) {
+    let user = req.session.user||{};
+    let username = user.username;
+    let img = '/upload/'+req.file.filename;
+    let article = {img};
+    Article.find({},function (err,docs) {
+        article.order = docs[docs.length-1].order+1;
+        Article.create(article,function (err,doc) {
+            User.update({username:username},{$push:{publish:doc._id}});
+            res.json(doc);
+        })
+    });
+});
+
+
+//发表文章
+app.post('/publisharticle',function (req,res) {
+    let article = req.body;
+    console.log(article);
+    article.author = req.session.user.username;
+    let username = req.session.user.username;
+    Type.findOne({name:article.category},function (err,type) {
+        console.log(type);
+        article.category = type._id;
+        Article.update({_id:article._id},article,function (err,result) {
+            if(err){
+                res.json({err});
+            }else{
+                Article.findOne({_id:article._id},function (err,doc) {
+                    res.json(doc);
+                })
+            }
+        })
+    })
 });
 
 

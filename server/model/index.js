@@ -12,10 +12,11 @@ let UserSchema = new mongoose.Schema({
     avatar:String,
     // like:{type:ObjectId,ref:'Article'},
     like:Array,
-    favourite:Array,
+    favorite:Array,
     publish:Array,
     email:{type:String,default:''},
     birthday:{type:String,default:''},
+    sex:{type:String,default:'男'},
 });
 
 exports.User = conn.model('User',UserSchema);
@@ -33,8 +34,8 @@ let ArticlesSchema = new mongoose.Schema({
     ],
     image:String,
     type:{type:ObjectId,ref:'Type',},
-    like:Number,
-    favorite:Boolean,
+    like:{type:Number,default:1},
+    favorite:{type:Boolean,default:false},
     createAt:{type:Date,default:Date.now},
     order:{type:Number,default:1}
 });

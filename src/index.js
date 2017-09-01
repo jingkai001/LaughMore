@@ -19,6 +19,9 @@ import {Provider} from 'react-redux';
 
 import {ConnectedRouter} from 'react-router-redux';
 import createHistory from 'history/createHashHistory';
+import Detail from "./containers/Detail/index";
+import Publish from "./containers/Publish/index";
+import PrivateRouteDetail from "./PrivateRouteDetail";
 
 let history = createHistory();
 
@@ -26,14 +29,13 @@ render(<Provider store={store}>
     <ConnectedRouter history={history}>
         <Wrap>
             <Switch>
-
                 <Route exact path="/" component={Home}/>
                 <Route path="/home" component={Home}/>
                 <PrivateRoute path="/profile" component={Profile}/>
                 <Route path="/login" component={Login}/>
                 <Route path="/reg" component={Reg}/>
-
-                {/*<Route path={'/publish'} render={(props) => <Publish {...props} title="发表文章"/>}/>*/}
+                <Route path={'/detail/:id'} component={Detail}/>
+                <PrivateRouteDetail path="/publish" component={Publish}/>
             </Switch>
         </Wrap>
     </ConnectedRouter>

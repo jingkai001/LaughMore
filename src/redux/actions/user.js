@@ -2,12 +2,11 @@ import * as types from '../action-types';
 import {regs, auths, logins,logouts} from '../../api/user';
 import util from '../../common/util'
 
-import {push} from 'react-router-redux';
+import {push,goBack} from 'react-router-redux';
 
 export const reg = (userInfo) => (dispatch) => {
 
     regs(userInfo).then(data => {
-
         if (data.err) {
             dispatch({
                 type: types.SET_USER_ERROR,
@@ -40,7 +39,7 @@ export const login = (userInfo) => (dispatch) => {
                 type: types.SET_USER_INFO,
                 userInfo: data
             });
-            dispatch(push('/profile'))
+            dispatch(goBack());
         }
     })
 };

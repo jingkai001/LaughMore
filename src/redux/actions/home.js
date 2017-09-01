@@ -102,4 +102,14 @@ export const clickFavorite = (article)=>(dispatch)=>{
     })
 };
 
+//取消收藏
+export const cancelFavorite = (article)=>(dispatch)=>{
+    cancelFavorites(article).then(user=>{
+        console.log(user);
+        dispatch({
+            type:types.SET_USER_INFO,
+            userInfo:user,
+        })
+    })
+};
 
