@@ -20,27 +20,20 @@ export const RESET_HOME = 'RESET_HOME';
 export const CLICK_LIKE = 'CLICK_LIKE';
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 //设置用户信息
-export const SET_USER_INFO='SET_USER_INFO';
+export const SET_USER_INFO = 'SET_USER_INFO';
 
-export const SET_USER_ERROR='SET_USER_ERROR';
+export const SET_USER_ERROR = 'SET_USER_ERROR';
+
+
 
 //清空错误信息
-export const CLEAR_USER_ERROR='CLEAR_USER_ERROR';
+export const CLEAR_USER_ERROR = 'CLEAR_USER_ERROR';
+
+//修改头像
+export const CHANGE_AVATAR_INFO = 'CHANGE_AVATAR_INFO';
+
 
 //获取初始文章列表
-export const GET_ALL="GET_ALL";
+export const GET_ALL = "GET_ALL";
 

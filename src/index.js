@@ -19,9 +19,9 @@ import {Provider} from 'react-redux';
 
 import {ConnectedRouter} from 'react-router-redux';
 import createHistory from 'history/createHashHistory';
-
+import Edit from "./containers/Edit/index";
+import EditRoute from "./EditRoute";
 let history = createHistory();
-
 render(<Provider store={store}>
     <ConnectedRouter history={history}>
         <Wrap>
@@ -32,6 +32,7 @@ render(<Provider store={store}>
                 <PrivateRoute path="/profile" component={Profile}/>
                 <Route path="/login" component={Login}/>
                 <Route path="/reg" component={Reg}/>
+                <EditRoute path="/edit" component={Edit}/>
 
                 {/*<Route path={'/publish'} render={(props) => <Publish {...props} title="发表文章"/>}/>*/}
             </Switch>

@@ -19,3 +19,7 @@ export const auths=()=>{
 export const logins=(userInfo)=>{
     return post(url+'/login',userInfo)
 }
+//修改资料
+export const edits=(userInfo)=>{
+    return post(url+'/modify',userInfo)
+}

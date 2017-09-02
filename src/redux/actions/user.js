@@ -1,8 +1,8 @@
 import * as types from '../action-types';
-import {regs, auths, logins} from '../../api/user';
+import {regs, auths, logins,edits} from '../../api/user';
 import util from '../../common/util'
 
-import {push} from 'react-router-redux';
+import {push,goBack} from 'react-router-redux';
 
 export const reg = (userInfo) => (dispatch) => {
 
@@ -40,13 +40,14 @@ export const login = (userInfo) => (dispatch) => {
                 type: types.SET_USER_INFO,
                 userInfo: data
             })
-            dispatch(push('/profile'))
+            dispatch(goBack())
         }
     })
 }
 //个人主页验证登录
 export const auth=()=>(dispatch)=>{
     auths().then(data=>{
+        console.log('ok')
         if(data.username){
             util.set('user',data)
             dispatch({
@@ -78,10 +79,25 @@ export const clear=()=>{
     }
 }
 
+
+//修改个人资料
+export const edit=(userInfo)=>(dispatch)=>{
+    edits(userInfo).then(data=>{
+        if(data.username){
+            dispatch({
+                type:types.SET_USER_INFO,
+                userInfo:data
+            })
+            dispatch(push('/profile'))
+        }
+    })
+}
+
 export default {
     login,
     reg,
     auth,
     validate,
-    clear
+    clear,
+    edit
 }

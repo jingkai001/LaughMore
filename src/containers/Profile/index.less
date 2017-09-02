@@ -21,8 +21,8 @@
       justify-content: center;
       align-items: center;
       img {
-        width: 80px;
-        height: 80px;
+        width: 100px;
+        height: 100px;
         background: gray;
         border-radius: 50%;
         display: inline-block;
@@ -35,17 +35,21 @@
       flex: 1;
     }
 
-    i {
+    a{
       display: flex;
       justify-content: center;
       align-items: center;
       flex: 1;
+      i {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      i:before{
+        padding-right: 5px;
+        font-size: 20px;
+      }
     }
-    i:before{
-      padding-right: 5px;
-      font-size: 20px;
-    }
-
   }
   .profile-body{
     display: flex;

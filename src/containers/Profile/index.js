@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import actions from '../../redux/actions/user';
 import './index.less'
+import {Link} from 'react-router-dom'
 
 class Profile extends Component{
     componentWillMount(){
@@ -14,9 +15,10 @@ class Profile extends Component{
                     我的
                 </div>
                 <div className="profile-header">
-                    <div><img src={"/upload"+this.props.user.userInfo.avatar} alt=""/></div>
+                    {this.props.user.userInfo.avatar?<div><img src={this.props.user.userInfo.avatar} alt=""/></div>:<div><img src="" alt=""/></div>}
                     <span>{this.props.user.userInfo.username}</span>
-                    <i className="iconfont icon-shezhi">修改资料</i>
+                    {/*<i className="iconfont icon-shezhi">修改资料</i>*/}
+                    <Link to="/edit"><i className="iconfont icon-shezhi">修改资料</i></Link>
                 </div>
                 <div className="profile-body">
                     <div className="profile-body-item">

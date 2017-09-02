@@ -4,11 +4,11 @@ import util from './common/util'
 
 export default class PrivateRoute extends Component {
     render() {
-        let {component: Component, ...rest} = this.props;
+        let {component: Profile, ...rest} = this.props;
         return (
             //登陆了跳到个人页，没登录去往登录页
             <Route {...rest} render={props => {
-                return util.get('user').username ? <Component {...props}/> : <Redirect to="/login"/>
+                return util.get('user').username ? <Profile {...props}/> : <Redirect to="/login"/>
             }}/>
         )
     }

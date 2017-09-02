@@ -32,7 +32,7 @@ class Reg extends Component {
     render() {
         return (
             <div className="reg-content">
-                <MHeader title="注个册吧"/>
+                <MHeader title="注册呀笨"/>
                 <div className="reg">
                     <form>
                         <div className="form-group">
