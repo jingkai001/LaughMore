@@ -37,6 +37,7 @@ class Home extends Component {
         }
     };
 
+
     componentDidMount() {
         //验证是否登录
         this.props.auth();
@@ -50,16 +51,30 @@ class Home extends Component {
             this.props.getFocus();
             this.props.getArticle();
         }
-        // if(this.props.home.article.articleList.length==0){
-        //     this.props.getArticle();
-        // }
 
+        //首页卸载后，会reset首页信息，如果点击首页进来，会获取数据，如果自动跳转则不会获取；为解决此bug，在首页store中加了一个flag，初始为false，如果是false，下面不会获取数据，挂载后flag为true，这样从别的地方自动跳转到首页，则下面条件成立，会获取数据，如果从别的页面点击进首页，因为点击时会自动获取数据，所以点击时让flag变为false，此时下面的条件不成立，不获取数据，即不会和点击首页时重复获取数据；
+        if(this.props.home.flag){
+            this.props.getArticle();
+        }
     }
 
     //组件卸载时，重置store中的文章数据；
     componentWillUnmount() {
         this.props.resetHome();
+        this.props.setFlagTrue();
     }
+
+    //搜索功能
+    onSearch = (val)=>{
+        this.props.getSearchInfo(val);
+    };
+
+    //搜索完成点击返回键时，让home页强制刷新，重新加载数据
+    reLoad = ()=>{
+        this.props.resetHome();
+        this.props.getArticle();
+    };
+
 
     render() {
         let {articleList, hasMore, isLoading} = this.props.home.article;
@@ -71,7 +86,7 @@ class Home extends Component {
         // console.log(like.some(likeId=>likeId==''))
         return (
             <div className="content">
-                <HomeHeader/>
+                <HomeHeader search={this.onSearch} reLoad={this.reLoad}/>
                 <ul className="home-nav">
                     {this.props.home.category.map((item, index) => (
                         <li key={index}><a onClick={() => this.changeType(item._id)}>{item.name}</a></li>
@@ -109,7 +124,6 @@ class Home extends Component {
                                 ))
                             }
                         </ul>
-
                     </ScrollList>
                 </div>
             </div>

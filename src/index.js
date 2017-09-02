@@ -40,4 +40,3 @@ render(<Provider store={store}>
         </Wrap>
     </ConnectedRouter>
 </Provider>, document.querySelector('#root'));
-

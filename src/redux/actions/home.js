@@ -1,5 +1,13 @@
 import * as types from '../action-types';
-import {getTypes,getFocuses,getArticles,clickLikes,cancelLikes,clickFavorites,cancelFavorites} from '../../api/home';
+import {getTypes,
+    getFocuses,
+    getArticles,
+    clickLikes,
+    cancelLikes,
+    clickFavorites,
+    cancelFavorites,
+    getSearchInfos,} from '../../api/home';
+
 import {auths} from '../../api/user';
 import {push} from 'react-router-redux';
 
@@ -105,7 +113,6 @@ export const clickFavorite = (article)=>(dispatch)=>{
 //取消收藏
 export const cancelFavorite = (article)=>(dispatch)=>{
     cancelFavorites(article).then(user=>{
-        console.log(user);
         dispatch({
             type:types.SET_USER_INFO,
             userInfo:user,
@@ -113,3 +120,32 @@ export const cancelFavorite = (article)=>(dispatch)=>{
     })
 };
 
+//搜索
+export const getSearchInfo = (val)=>(dispatch,getState)=>{
+    let {limit} = getState().home.article;
+    //点搜索时，offset永远从0开始；
+    let offset = 0;
+    //if(!hasMore) return;
+    dispatch({type:types.SET_LOADING_STATUS});
+    getSearchInfos(val,offset,limit).then(data=>{
+        dispatch({
+            type:types.GET_SEARCH_INFO,
+            data,
+        })
+    })
+};
+
+
+
+//解决首页bug
+export const setFlagTrue = ()=>{
+    return {
+        type:types.SET_FLAG_TRUE,
+    }
+};
+
+export const setFlagFalse = ()=>{
+    return {
+        type:types.SET_FLAG_FALSE,
+    }
+}

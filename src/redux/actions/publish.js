@@ -11,7 +11,7 @@ export const savePublishImg = (article)=>{
 };
 
 
-//
+//发表文章，成功后跳到详情页
 export const publishArticle = (article)=>(dispatch)=>{
     publishArticles(article).then(function (doc) {
         dispatch({
@@ -19,6 +19,6 @@ export const publishArticle = (article)=>(dispatch)=>{
             doc,
         });
         console.log(doc);
-        push('/detail/'+doc._id);
+        dispatch(push('/detail/'+doc._id));
     })
 };

@@ -5,7 +5,12 @@ export default class HomeHeader extends Component{
         this.state={flag:true}
     }
     handleChange=()=>{
-        this.setState({flag:!this.state.flag})
+        this.setState({flag:!this.state.flag});
+        this.props.reLoad();
+    };
+
+    submitSearchInfo = (e)=>{
+        this.props.search(this.refs.input.value);
     };
 
     render(){
@@ -19,8 +24,8 @@ export default class HomeHeader extends Component{
                             <span onClick={this.handleChange} className="col-xs-4 text-right glyphicon glyphicon-search "></span>
                         </div>:<div className="navbar navbar-default">
                         <span onClick={this.handleChange} className="glyphicon glyphicon-menu-left col-xs-1"></span>
-                        <input type="text" placeholder="搜索" className=" col-xs-8 icon"/>
-                        <button className="btn btn-default col-xs-2 pull-right" type="button">Go!</button>
+                        <input type="text" placeholder="搜索" className=" col-xs-8 icon" ref="input" required/>
+                        <button className="btn btn-default col-xs-2 pull-right" type="button" onClick={this.submitSearchInfo}>Go!</button>
 
                     </div>
                 }

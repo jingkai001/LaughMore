@@ -28,6 +28,8 @@ export const CLICK_FAVORITE = 'CLICK_FAVORITE';
 //取消收藏
 export const CANCEL_FAVORITE = 'CANCEL_FAVORITE';
 
+//搜索
+export const GET_SEARCH_INFO = 'GET_SEARCH_INFO';
 
 
 
@@ -73,5 +75,8 @@ export const SET_UPLOAD_IMG = 'SET_UPLOAD_IMG';
 export const SET_PUBLISH_ARTICLE = 'SET_PUBLISH_ARTICLE';
 
 
+//给首页加flag，解决首页卸载后重置首页状态，然后从其他页面自动跳转到首页后文章列表不显示的问题
+export const SET_FLAG_TRUE = 'SET_FLAG_TRUE';
 
+export const SET_FLAG_FALSE = 'SET_FLAG_FALSE';
 

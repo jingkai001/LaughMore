@@ -8,6 +8,7 @@ class Tab extends Component {
 
     handleClick = () => {
         this.props.resetHome();
+        this.props.setFlagFalse();
         this.props.getArticle();
     };
 

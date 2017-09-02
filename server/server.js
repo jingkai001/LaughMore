@@ -55,7 +55,7 @@ app.get('/type',function (req,res) {
 app.get('/article/:typeid/:offset/:limit',function (req,res) {
     let {typeid,offset,limit} = req.params;
     if(typeid==0){
-        Article.find({}).populate('type').skip(offset).limit(limit).exec(function (err,articles) {
+        Article.find({}).populate('type').sort({createAt:-1}).skip(offset).limit(limit).exec(function (err,articles) {
             if(err){
                 res.json(err);
             }else{
@@ -67,7 +67,7 @@ app.get('/article/:typeid/:offset/:limit',function (req,res) {
             }
         })
     }else{
-        Article.find({type:typeid}).populate('type').skip(offset).limit(limit).exec(function (err,articles) {
+        Article.find({type:typeid}).populate('type').sort({createAt:-1}).skip(offset).limit(limit).exec(function (err,articles) {
             if(err){
                 res.json(err);
             }else{
@@ -149,6 +149,23 @@ app.post('/cancelfavorite',function (req,res) {
         }
     })
 });
+
+//搜索 $regex 正则匹配
+app.get('/search/:val/:offset/:limit',function (req,res) {
+    let {val,offset,limit} = req.params;
+    Article.find({$or:[{title:{$regex:val}},{text:{$regex:val}}]}).populate('type').sort({createAt:-1}).skip(offset).limit(limit).exec(function (err,docs) {
+        if(err){
+            res.json({err});
+        }else{
+            if(docs.length<limit){
+                res.json({hasMore:false,docs});
+            }else{
+                res.json({hasMore:true,docs});
+            }
+        }
+    });
+});
+
 
 //获取某一篇文章
 app.get('/detail/:id',function (req,res) {

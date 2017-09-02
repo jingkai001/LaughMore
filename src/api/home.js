@@ -22,3 +22,6 @@ export const clickFavorites = (article)=>post(url+'/favorite',article);
 
 //取消收藏
 export const cancelFavorites = (article)=>post(url+'/cancelfavorite',article);
+
+//搜索
+export const getSearchInfos = (val,offset,limit)=>get(url+`/search/${val}/${offset}/${limit}`);
