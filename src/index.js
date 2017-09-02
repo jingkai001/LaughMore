@@ -23,6 +23,7 @@ import Detail from "./containers/Detail/index";
 import Publish from "./containers/Publish/index";
 import PrivateRouteDetail from "./PrivateRouteDetail";
 
+
 let history = createHistory();
 
 render(<Provider store={store}>
