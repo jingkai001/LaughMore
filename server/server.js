@@ -380,7 +380,6 @@ app.get('/getlike',function (req,res) {
     let username = user.username;
 
     User.findOne({username}).populate('like').exec(function (err,user) {
-
         res.json(user.like);
     })
 
@@ -451,18 +450,6 @@ app.get('/logout',function (req,res) {
     }else{
         res.json({code:0,msg:'退出失败'});
     }
-});
-
-//返回对应用户的点赞文章列表
-app.get('/getlike',function (req,res) {
-    let user = req.session.user||{};
-    let username = user.username;
-
-    User.findOne({username}).populate('like').exec(function (err,user) {
-
-        res.json(user.like);
-    })
-
 });
 
 
