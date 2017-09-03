@@ -34,7 +34,7 @@ let ArticlesSchema = new mongoose.Schema({
     image:String,
     type:{type:ObjectId,ref:'Type',},
     like:Number,
-    favorite:Boolean,
+    favorite:{type:Boolean,default:false},
     createAt:{type:Date,default:Date.now},
     order:{type:Number,default:1}
 });

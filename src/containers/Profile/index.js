@@ -8,7 +8,17 @@ class Profile extends Component{
     componentWillMount(){
         this.props.auth()
     }
+
+    logout = ()=>{
+        this.props.logout();
+        this.props.history.push('/');
+    };
+
     render(){
+        let userInfo = this.props.user.userInfo;
+        let like = userInfo.like||[];
+        let publish = userInfo.publish||[];
+        let favorite = userInfo.favorite||[];
         return (
             <div className="profile">
                 <div className="m-header">
@@ -23,21 +33,22 @@ class Profile extends Component{
                 <div className="profile-body">
                     <div className="profile-body-item">
                         <i className="iconfont icon-17"></i>
-                        <span>发表</span>
+                        <span>发表 {publish.length}</span>
                         <i className="iconfont icon-right"></i>
                     </div>
                     <div className="profile-body-item">
                         <i className="iconfont icon-shoucang"></i>
-                        <span>收藏</span>
+                        <span>收藏 {favorite.length}</span>
                         <i className="iconfont icon-right"></i>
                     </div>
                     <div className="profile-body-item">
                         <i className="iconfont icon-zan2"></i>
-                        <span>点赞</span>
+                        <span>点赞 {like.length}</span>
                         <i className="iconfont icon-right"></i>
                     </div>
-
-
+                    <div className="logout" onClick={this.logout}>
+                        退出登录
+                    </div>
                 </div>
             </div>
         )

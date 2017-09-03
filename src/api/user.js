@@ -23,3 +23,6 @@ export const logins=(userInfo)=>{
 export const edits=(userInfo)=>{
     return post(url+'/modify',userInfo)
 }
+
+//退出登录
+export const logouts = ()=>get(url+'/logout');

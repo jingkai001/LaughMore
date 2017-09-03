@@ -11,11 +11,9 @@ export default function (state = initState, action) {
         case types.SET_USER_ERROR:
             return {...state, err: action.error};
         case types.CLEAR_USER_ERROR:
-            return {...state, err: ''};
-        case types.CHANGE_AVATAR_INFO:
-            return {
-                ...state, userInfo: {...state.userInfo, avatar: action.img}
-            }
+            return {...state,err:''};
+        case types.DEL_USER_INFO:
+            return {...state,userInfo:action.userInfo,err:''};
         default:
             return state;
     }

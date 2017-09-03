@@ -1,6 +1,7 @@
 import * as types from '../action-types';
 
 let initState = {
+    flag:false,
     currentType: "0",
     focus: [],
     article: {
@@ -65,16 +66,13 @@ export default function (state = initState, action) {
                     offset:0,
                     articleList:[],
                     hasMore:true,
-                }
+                },
             };
         case types.CLICK_LIKE:
             let articleList = state.article.articleList;
             let newArticleList = articleList.filter(item=>{
-                console.log(action);
-                console.log(item._id,action._id);
                 if(item._id==action._id){
                     item.like=action.like;
-                    console.log(item);
                     return item;
                 }
                 return item;
@@ -85,8 +83,44 @@ export default function (state = initState, action) {
                     ...state.article,
                     articleList:newArticleList,
                 }
+            };
+        case types.CANCEL_LIKE:
+            articleList = state.article.articleList;
+            newArticleList = articleList.filter(item=>{
+                if(item._id==action._id){
+                    item.like=action.like;
+                    return item;
+                }
+                return item;
+            });
+            return {
+                ...state,
+                article:{
+                    ...state.article,
+                    articleList:newArticleList,
+                }
+            };
+        case types.GET_SEARCH_INFO:
+            return {
+                ...state,
+                article:{
+                    ...state.article,
+                    articleList:action.data.docs,
+                    offset:state.article.offset + action.data.docs.length,
+                    hasMore:action.data.hasMore,
+                    isLoading:false,
+                }
+            };
+        case types.SET_FLAG_TRUE:
+            return {
+                ...state,
+                flag:true,
+            };
+        case types.SET_FLAG_FALSE:
+            return {
+                ...state,
+                flag:false,
             }
-
     }
     return state;
 }
