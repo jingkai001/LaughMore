@@ -48,7 +48,7 @@ export const login = (userInfo) => (dispatch) => {
 //个人主页验证登录
 export const auth=()=>(dispatch)=>{
     auths().then(data=>{
-        console.log('ok')
+        console.log(data);
         if(data.username){
             util.set('user',data);
             dispatch({

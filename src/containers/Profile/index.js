@@ -16,6 +16,7 @@ class Profile extends Component{
 
     render(){
         let userInfo = this.props.user.userInfo;
+        console.log(userInfo)
         let like = userInfo.like||[];
         let publish = userInfo.publish||[];
         let favorite = userInfo.favorite||[];

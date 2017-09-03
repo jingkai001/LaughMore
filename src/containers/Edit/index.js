@@ -64,8 +64,9 @@ class Edit extends React.Component {
         this.props.edit({username, email, sex, birthday})
     }
     render() {
-        let { email, birthday,avatar} = this.state;
-        console.log(this.state)
+        let email = this.state.email||'';
+        let birthday = this.state.birthday||'';
+        let avatar = this.state.avatar;
         return (
             <div className="edit-content">
                 <MHeader title="关于我"/>
@@ -83,13 +84,14 @@ class Edit extends React.Component {
                     >
                         <img src={avatar} alt="" className="avatar"/>
                         <Icon type="plus" className="avatar-uploader-trigger"/>
+                        <div className="username" id="usernameEdit">{this.props.user.userInfo.username}</div>
                     </Upload>
                 </div>
                 <form className="edit-form">
-                    <div className="form-group">
-                        <label htmlFor="username" className="control-label">昵称</label>
-                        <input type="text" className="form-control" id="username"  value={this.props.user.userInfo.username} name="username"/>
-                    </div>
+                    {/*<div className="form-group">
+                        <label htmlFor="username" className="control-label">用户名</label>
+                        <input type="text" className="form-control" id="username"  defaultValue={this.props.user.userInfo.username} name="username"/>
+                    </div>*/}
                     <div className="form-group">
                         <label className="control-label">性别</label>
                         <div className="sex">

@@ -125,12 +125,12 @@ app.post('/favorite',function (req,res) {
     let article = req.body;
     let currentUser = req.session.user;
     User.update({username:currentUser.username},{$push:{favorite:article._id}}).exec(function (err,doc) {
-        if(!err){
+        if(err){
+            res.json({err});
+        }else{
             User.findOne({username:currentUser.username},function (err,user) {
                 res.json(user);
-            })
-        }else{
-            res.json({err})
+            });
         }
     })
 });
@@ -308,8 +308,9 @@ app.post('/signup',update.single('avatar'),function (req,res) {
 app.post('/login',function (req,res) {
     let {username,password} = req.body;
     password = md5(password);
-    User.findOne({username,password},function (err,user) {
+    User.findOne({username},function (err,user) {
         if(user){
+            console.log(user,111);
             //登录成功后 把用户存到session中
             req.session.user = user;
             res.json(user);
@@ -323,7 +324,6 @@ app.post('/login',function (req,res) {
 app.get('/auth',function (req,res) {
     let user = req.session.user||{};
     let username = user.username;
-
     if(username){
         User.findOne({username},function (err,user) {
             res.json(user);
@@ -396,8 +396,12 @@ app.post('/publishimg',update.single('publishImg'),function (req,res) {
     Article.find({},function (err,docs) {
         article.order = docs[docs.length-1].order+1;
         Article.create(article,function (err,doc) {
-            User.update({username:username},{$push:{publish:doc._id}});
-            res.json(doc);
+            console.log(doc);
+            User.update({username:username},{$push:{publish:doc._id}}).exec(function (e,result) {
+                console.log(e,result);
+                res.json(doc);
+            });
+
         })
     });
 });
@@ -430,8 +434,9 @@ app.post('/publisharticle',function (req,res) {
         Article.find({},function (err,docs) {
             article.order = docs[docs.length-1].order+1;
             Article.create(article,function (err,doc) {
-                User.update({username:username},{$push:{publish:doc._id}});
-                res.json(doc);
+                User.update({username:username},{$push:{publish:doc._id}}).exec(function (e,result) {
+                    res.json(doc);
+                });
             })
         });
 
