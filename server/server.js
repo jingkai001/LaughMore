@@ -1,7 +1,6 @@
 let express = require('express');
 let path = require('path');
 let focus = require('./mock/focus');
-let articles = require('./mock/articles');
 let mongoose = require('mongoose');
 
 let bodyParser = require('body-parser');

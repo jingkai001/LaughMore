@@ -1,13 +1,7 @@
-# 用React、React-Router4、React-Redux、React-Router-Redux+Node，Express，MongoDB做看文章，发文章的App
+# 基于React、React-Router4、React-Redux、React-Router-Redux+Node，Express，MongoDB的App(点赞，收藏，发表，评论...)
 
 - 本项目主要用来总结一段时间来学习的React各种知识；
 - 后台基于Node.js+Express+MongoDB构建服务端；
-
-## 参与人
-- 景凯       负责后台+搜索功能
-- 徐向华     负责主页
-- 尹孟孟     负责个人中心+注册+登录+修改个人资料页
-- 刘祎       负责文章详情页+发表页
 
 ## 安装和运行程序
 克隆项目
